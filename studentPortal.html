@@ -16,9 +16,6 @@
         $(document).ready(function() {
             function loadHomeContent() {
                 $.get('get_courses.php', function(data) {
-                    console.log(data);
-
-                    
                     let coursesHtml = '';
                     data.forEach(course => {
                         coursesHtml += `
@@ -82,7 +79,7 @@
                                 <p>Rating: ${review.Rating}/5</p>
                             </div>`;
                     });
-                    $('#reviews').html(reviewsHtml);
+                    $('#reviews-list').html(reviewsHtml);
                 });
             }
 
@@ -97,6 +94,21 @@
             tabs.forEach(tab => tab.style.display = 'none');
             document.getElementById(tabId).style.display = 'block';
         }
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('populate_dropdowns.php')
+            .then(response => response.json())
+            .then(data => {
+                const teacherSelect = document.getElementById('tutor');
+            
+                data.teachers.forEach(teacher => {
+                    let option = document.createElement('option');
+                    option.value = teacher.TutorID;
+                    option.textContent = teacher.FullName;
+                    teacherSelect.appendChild(option);
+                });
+            });
+        });        
     </script>
 </head>
 <body>
@@ -180,7 +192,7 @@
     <!-- Reviews Tab Content -->
     <div id="reviews" class="tab-content" style="display: none;">
         <h1 class="heading-text mb-3">Reviews</h1>
-        <div id="reviews">
+        <div id="reviews-list">
             <!-- Dynamic content loaded via AJAX -->
         </div>
         <h2 class="heading-text mb-3">Submit a Review</h2>

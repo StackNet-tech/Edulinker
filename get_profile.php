@@ -24,13 +24,13 @@ if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
     echo json_encode([
         'name' => $user['Username'],
-        'address' => $user['Address'],
+        'address' => $user['Address'] ?? 'N/A',  // Provide a default value
         'email' => $user['Email'],
-        'birthday' => $user['DateOfBirth'],
-        'language' => $user['Language'],
-        'learning_method' => $user['LearningMethod'],
-        'profile_image' => $user['ProfileImage']
-    ]);
+        'birthday' => $user['DateOfBirth'] ?? null,  // Keep null if it's acceptable
+        'language' => $user['Language'] ?? 'N/A',
+        'learning_method' => $user['LearningMethod'] ?? 'N/A',
+        'profile_image' => $user['ProfileImage'] ?? 'default_profile_image.jpg'  // Fallback image
+    ]);    
 } else {
     echo json_encode(['message' => 'User not found']);
 }

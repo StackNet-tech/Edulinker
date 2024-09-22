@@ -1,9 +1,11 @@
 <?php
 header('Content-Type: application/json');
 session_start();
-$mysqli = new mysqli('localhost', 'username', 'password', 'EduLinker');
 
-if ($mysqli->connect_error) {
+// Include database connection
+include 'db_config.php';
+
+if ($conn->connect_error) {
     die(json_encode(['message' => 'Database connection failed']));
 }
 
@@ -12,8 +14,8 @@ $rating = $_POST['rating'];
 $comment = $_POST['comment'];
 $userID = $_SESSION['userID'];  // Assuming userID is stored in session
 
-$query = "INSERT INTO Reviews (TutorID, UserID, Rating, Comment) VALUES (?, ?, ?, ?)";
-$stmt = $mysqli->prepare($query);
+$query = "INSERT INTO Reviews (TutorID, , Rating, Comment) VALUES (?, ?, ?, ?)";
+$stmt = $conn->prepare($query);
 $stmt->bind_param('siss', $tutorID, $userID, $rating, $comment);
 
 if ($stmt->execute()) {
@@ -23,5 +25,5 @@ if ($stmt->execute()) {
 }
 
 $stmt->close();
-$mysqli->close();
+$conn->close();
 ?>

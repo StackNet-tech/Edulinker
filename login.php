@@ -1,6 +1,8 @@
 <?php
 header('Content-Type: application/json');
+session_start();
 include 'db_config.php';
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
@@ -35,6 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+    $_SESSION['userID'] = $userID;
+    
     // Success - return user details or redirect
     echo json_encode([
         'status' => 'success',
