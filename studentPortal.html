@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/customCSS/styles.css">
+    <link rel="stylesheet" href="css/customCSS/studentCSS.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function loadHomeContent() {
+                $.get('get_courses.php', function(data) {
+                    console.log(data);
+
+                    
+                    let coursesHtml = '';
+                    data.forEach(course => {
+                        coursesHtml += `
+                            <div class="col-md-3">
+                                <div class="card recommended-card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${course.CourseName}</h5>
+                                        <div class="card-img">
+                                            <img src="https://dummyimage.com/200x200/000/fff&text=${course.CourseName}" alt="${course.CourseName}" class="img-fluid">
+                                        </div>
+                                        <p class="card-text">${course.Description}</p>
+                                        <p class="card-footer" style="margin-top: 20px;">${course.Category}</p>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#enrollModal">
+                                            Enroll now
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                    $('.recommended-card-container').html(coursesHtml);
+                });
+            }
+
+            function loadProfile() {
+                $.get('get_profile.php', function(data) {
+                    $('#name').val(data.name);
+                    $('#address').val(data.address);
+                    $('#email').val(data.email);
+                    $('#birthday').val(data.birthday);
+                    $('#language').val(data.language);
+                    $('#learning-method').val(data.learning_method);
+                    $('#profileImage').attr('src', data.profile_image);
+                });
+            }
+
+            function loadTeachers() {
+                $.get('get_teachers.php', function(data) {
+                    let teachersHtml = '';
+                    data.forEach(teacher => {
+                        teachersHtml += `
+                            <div class="teacher-card">
+                                <div class="col-lg-3">
+                                    <img src="${teacher.ProfileImage}" alt="${teacher.FullName}" class="img-fluid">
+                                </div>
+                                <div class="col-lg-4">
+                                    <p>${teacher.FullName}</p>
+                                </div>
+                            </div>`;
+                    });
+                    $('#teachers').html(teachersHtml);
+                });
+            }
+
+            function loadReviews() {
+                $.get('get_reviews.php', function(data) {
+                    let reviewsHtml = '';
+                    data.forEach(review => {
+                        reviewsHtml += `
+                            <div class="review-card">
+                                <p><strong>${review.FullName}:</strong> ${review.Comment}</p>
+                                <p>Rating: ${review.Rating}/5</p>
+                            </div>`;
+                    });
+                    $('#reviews').html(reviewsHtml);
+                });
+            }
+
+            loadHomeContent();
+            loadProfile();
+            loadTeachers();
+            loadReviews();
+        });
+
+        function openTab(tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.style.display = 'none');
+            document.getElementById(tabId).style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+<header class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Student Portal</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <button type="button" class="nav-link" onclick="openTab('home')">Home</button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="nav-link" onclick="openTab('profile')">Profile</button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="nav-link" onclick="openTab('teachers')">Teachers</button>
+            </li>
+            <li class="nav-item">
+                <button type="button" class="nav-link" onclick="openTab('reviews')">Reviews</button>
+            </li>
+        </ul>
+    </div>
+</header>
+
+<div class="container-fluid">
+    <!-- Home Tab Content -->
+    <div id="home" class="tab-content">
+        <div class="row recommended-card-container">
+            <!-- Dynamic content loaded via AJAX -->
+        </div>
+    </div>
+
+    <!-- Profile Tab Content -->
+    <div id="profile" class="tab-content" style="display: none;">
+        <h1 class="heading-text mb-3">Update Profile</h1>
+        <form action="student_update_profile.php" method="post">
+            <div class="d-flex flex-row mb-2">
+                <label for="name" class="col-lg-4 col-md-4 col-sm-12 col-12">Name:</label>
+                <input type="text" class="form-control col-lg-8 col-md-8 col-sm-12 col-12" id="name" name="name" required>
+            </div>
+            <div class="d-flex flex-row mb-2">
+                <label for="address" class="col-lg-4 col-md-4 col-sm-12 col-12">Address:</label>
+                <input type="text" class="form-control col-lg-8 col-md-8 col-sm-12 col-12" id="address" name="address" required>
+            </div>
+            <div class="d-flex flex-row mb-2">
+                <label for="email" class="col-lg-4 col-md-4 col-sm-12 col-12">Email:</label>
+                <input type="email" class="form-control col-lg-8 col-md-8 col-sm-12 col-12" id="email" name="email" required>
+            </div>
+            <div class="d-flex flex-row mb-2">
+                <label for="birthday" class="col-lg-4 col-md-4 col-sm-12 col-12">Date of Birth:</label>
+                <input type="date" class="form-control col-lg-8 col-md-8 col-sm-12 col-12" id="birthday" name="birthday" required>
+            </div>
+            <div class="d-flex flex-row mb-2">
+                <label for="language" class="col-lg-4 col-md-4 col-sm-12 col-12">Language:</label>
+                <input type="text" class="form-control col-lg-8 col-md-8 col-sm-12 col-12" id="language" name="language" required>
+            </div>
+            <div class="d-flex flex-row mb-2">
+                <label for="learning-method" class="col-lg-4 col-md-4 col-sm-12 col-12">Learning Method:</label>
+                <input type="text" class="form-control col-lg-8 col-md-8 col-sm-12 col-12" id="learning-method" name="learning-method" required>
+            </div>
+            <div class="d-flex flex-row mb-2">
+                <label for="profile-image" class="col-lg-4 col-md-4 col-sm-12 col-12">Profile Image:</label>
+                <input type="file" class="form-control col-lg-8 col-md-8 col-sm-12 col-12" id="profile-image" name="profile-image">
+                <img id="profileImage" src="" alt="Profile Image" style="width: 100px; height: 100px;">
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+
+    <!-- Teachers Tab Content -->
+    <div id="teachers" class="tab-content" style="display: none;">
+        <h1 class="heading-text mb-3">Our Teachers</h1>
+        <div class="row">
+            <!-- Dynamic content loaded via AJAX -->
+        </div>
+    </div>
+
+    <!-- Reviews Tab Content -->
+    <div id="reviews" class="tab-content" style="display: none;">
+        <h1 class="heading-text mb-3">Reviews</h1>
+        <div id="reviews">
+            <!-- Dynamic content loaded via AJAX -->
+        </div>
+        <h2 class="heading-text mb-3">Submit a Review</h2>
+        <form action="submit_review.php" method="post">
+            <div class="d-flex flex-row mb-2">
+                <label for="tutor" class="col-lg-4 col-md-4 col-sm-12 col-12">Select Tutor:</label>
+                <select class="form-control col-lg-8 col-md-8 col-sm-12 col-12" id="tutor" name="tutor">
+                    <!-- Options populated via AJAX -->
+                </select>
+            </div>
+            <div class="d-flex flex-row mb-2">
+                <label for="rating" class="col-lg-4 col-md-4 col-sm-12 col-12">Rating:</label>
+                <input type="number" class="form-control col-lg-8 col-md-8 col-sm-12 col-12" id="rating" name="rating" min="1" max="5" required>
+            </div>
+            <div class="d-flex flex-row mb-2">
+                <label for="comment" class="col-lg-4 col-md-4 col-sm-12 col-12">Comment:</label>
+                <textarea class="form-control col-lg-8 col-md-8 col-sm-12 col-12" id="comment" name="comment" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

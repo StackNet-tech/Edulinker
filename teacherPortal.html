@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Portal</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/customCSS/styles.css">
+    <link rel="stylesheet" href="css/customCSS/teacherCSS.css">
+</head>
+<body>
+<header class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <a class="navbar-brand" href="#">Teacher Portal</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#registration">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#profile-management">Availability</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#booking-management">Bookings</a>
+            </li>
+        </ul>
+    </div>
+</header>
+
+<div class="container mt-5">
+    <div class="jumbotron text-center teacher-home-section">
+        <h1 class="home-h1">Welcome to the Teacher Portal</h1>
+        <p class="home-sub-heading">Manage your profile, verify your details, and handle your bookings seamlessly.</p>
+    </div>
+
+    <!-- Registration and Verification -->
+    <section id="registration" class="update-profile-section">
+        <h2 class="heading-text">Update Profile</h2>
+        <form action="update_profile.php" method="POST" enctype="multipart/form-data" class="gap-2">
+            <button type="submit" class="btn btn-primary float-end">Submit for Verification</button>
+            <div class="row col-12 mb-2">
+                <label for="fullName" class="col-lg-4 col-md-4 col-sm-12 col-12">Name</label>
+                <input type="text" class="form-control col-lg-8 col-md-8 col-sm-12 col-12" id="fullName" name="fullName" placeholder="Enter your full name" required>
+            </div>
+            <div class="row col-12 mb-2">
+                <label for="address" class="col-lg-4 col-md-4 col-sm-12 col-12">Address</label>
+                <input type="text" class="form-control col-lg-8 col-md-8 col-sm-12 col-12" id="address" name="address" placeholder="Enter your address" required>
+            </div>
+            <div class="row col-12 mb-2">
+                <label for="email" class="col-lg-4 col-md-4 col-sm-12 col-12">Email</label>
+                <input type="email" class="form-control col-lg-8 col-md-8 col-sm-12 col-12" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="row col-12 mb-2">
+                <label for="birthday" class="col-lg-4 col-md-4 col-sm-12 col-12">Birthday</label>
+                <input type="date" class="form-control col-lg-8 col-md-8 col-sm-12 col-12" id="birthday" name="birthday">
+            </div>
+            <div class="mb-2">
+                <button type="button" class="btn btn-outline-success mb-2" onclick="addNewQuaRow()">Add New Qualification</button>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Qualification</th>
+                        <th>Proof</th>
+                        <th>Remove</th>
+                    </tr>
+                    </thead>
+                    <tbody id="qualification-table" class="table-responsive">
+                    <tr>
+                        <td>Degree</td>
+                        <td><input type="file" class="form-control" name="proof[]" required></td>
+                        <td><button type="button" class="btn btn-danger" onclick="removeQuaRow(this)">Remove</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </section>
+
+    <!-- Profile Management -->
+    <section id="profile-management" class="mt-5 profile-management-section">
+        <h2 class="heading-text">Profile Management</h2>
+        <form action="update_availability.php" method="POST">
+            <div class="form-group">
+                <label for="availability">Availability</label>
+                <input type="text" class="form-control" id="availability" name="availability" placeholder="Enter your availability" required>
+            </div>
+            <div class="form-group">
+                <label for="subjects">Subjects</label>
+                <input type="text" class="form-control" id="subjects" name="subjects" placeholder="Enter subjects you teach" required>
+            </div>
+            <div class="form-group">
+                <label for="teaching-method">Teaching Method</label>
+                <input type="text" class="form-control" id="teaching-method" name="teaching-method" placeholder="Enter your teaching method" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Availability</button>
+        </form>
+    </section>
+
+    <!-- Booking Management -->
+    <section id="booking-management" class="mt-5 booking-management-section">
+        <h2 class="heading-text">Booking Requests</h2>
+        <form action="update_booking.php" method="POST">
+            <div class="form-group">
+                <label for="booking-request">Booking Request ID</label>
+                <input type="text" class="form-control" id="booking-request" name="booking-request" placeholder="Enter booking request ID" required>
+            </div>
+            <div class="form-group">
+                <label for="response">Response</label>
+                <input type="text" class="form-control" id="response" name="response" placeholder="Enter your response" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Response</button>
+        </form>
+    </section>
+</div>
+
+<script src="../js/jquery.min.js"></script>
+<script src="../js/bootstrap.bundle.min.js"></script>
+<script src="../js/customJS/teacher.js"></script>
+</body>
+</html>
