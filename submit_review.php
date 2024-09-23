@@ -14,7 +14,7 @@ $rating = $_POST['rating'];
 $comment = $_POST['comment'];
 $userID = $_SESSION['userID'];  // Assuming userID is stored in session
 
-$query = "INSERT INTO Reviews (TutorID, , Rating, Comment) VALUES (?, ?, ?, ?)";
+$query = "INSERT INTO Reviews (TutorID, UserID, Rating, Comment) VALUES (?, ?, ?, ?)";
 $stmt = $conn->prepare($query);
 $stmt->bind_param('siss', $tutorID, $userID, $rating, $comment);
 
