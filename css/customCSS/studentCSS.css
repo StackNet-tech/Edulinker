@@ -119,9 +119,15 @@
     flex-direction: row;
     justify-content: space-evenly;
     align-items: start;
+    position: relative;
 
 }
 
+.teacher-card .btn-primary {
+    position: absolute; /* add this */
+    bottom: 15px; /* adjust the value to your liking */
+    right: 15px; /* adjust the value to your liking */
+}
 
 /*like button*/
 /* From Uiverse.io by vinodjangid07 */

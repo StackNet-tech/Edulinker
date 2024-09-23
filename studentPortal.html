@@ -63,6 +63,9 @@
                                 <div class="col-lg-4">
                                     <p>${teacher.FullName}</p>
                                 </div>
+                                <div class="col-lg-5 text-right">
+                                    <button class="btn btn-primary" onclick="location.href='meetTeacher.html?teacherId=${teacher.Id}'">Meet Teacher</button>
+                                </div>
                             </div>`;
                     });
                     $('#teachers').html(teachersHtml);
